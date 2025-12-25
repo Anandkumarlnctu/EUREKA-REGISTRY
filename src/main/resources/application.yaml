@@ -1,0 +1,13 @@
+server:
+  port: ${PORT:8080}
+
+spring:
+  application:
+    name: EUREKA-REGISTRY
+
+eureka:
+  client:
+    register-with-eureka: false
+    fetch-registry: false
+  server:
+    enable-self-preservation: true
