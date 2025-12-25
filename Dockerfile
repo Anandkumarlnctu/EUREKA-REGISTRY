@@ -1,14 +1,12 @@
-# Use Java 17 runtime
-FROM eclipse-temurin:17-jdk-alpine
-
-# Set working directory
+# Stage 1: Build the application using Maven
+FROM maven:3.9.6-eclipse-temurin-17 AS build
 WORKDIR /app
+COPY . .
+RUN mvn clean package -DskipTests
 
-# Copy jar file
-COPY target/EUREKA-REGISTRY-0.0.1-SNAPSHOT.jar app.jar
-
-# Expose Eureka port
+# Stage 2: Run the application
+FROM eclipse-temurin:17-jdk
+WORKDIR /app
+COPY --from=build /app/target/EUREKA-REGISTRY-0.0.1-SNAPSHOT.jar app.jar
 EXPOSE 8080
-
-# Run application
 ENTRYPOINT ["java", "-jar", "app.jar"]
